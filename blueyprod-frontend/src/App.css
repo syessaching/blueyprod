@@ -79,3 +79,51 @@ button:hover{
   font-style: italic;
   opacity: 0.9;
 }
+
+.nav {
+  display: flex;
+  gap:10px;
+  margin-bottom: 30px;
+  justify-content: center;
+}
+
+.nav button {
+  padding: 12px 24px;
+  background: #f0f0f0;
+  color: black;
+  border: 2px solid transparent;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+}
+
+.nav button:hover {
+  background: #e0e0e0;
+}
+
+.nav button.active {
+  background: #43e97b;
+  color: white;
+  border-color: #43e97b;
+}
+
+.card-image {
+  width: 100%;
+  max-height: 300px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin: 15px 0;
+}
+
+input[type='file'] {
+  padding: 10px;
+  border: 2px dashed #ddd;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+input[type='file']:hover {
+  border-color: #43e97b;
+}

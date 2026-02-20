@@ -4,8 +4,18 @@ class CardsController < ApplicationController
   # GET /cards
   def index
     @cards = Card.all
-
-    render json: @cards
+    
+    render json: @cards.map { |card|
+      {
+        id: card.id,
+        name: card.name,
+        message: card.message,
+        music_recommendation: card.music_recommendation,
+        created_at: card.created_at,
+        updated_at: card.updated_at,
+        image_url: card.image.attached? ? url_for(card.image) : nil
+      }
+    }
   end
 
   # GET /cards/1
@@ -46,6 +56,6 @@ class CardsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def card_params
-      params.expect(card: [ :name, :message, :music_recommendation ])
+      params.expect(card: [ :name, :message, :music_recommendation, :image ])
     end
 end
