@@ -1,0 +1,9 @@
+services: 
+- type: web
+  name: blueyprod
+  env: ruby
+  buildCommand: "bundle install; rails db:migrate"
+  startCommand: "rails server -b 0.0.0.0"
+  envVars:
+        - key: RAILS_MASTER_KEY
+          sync: false
