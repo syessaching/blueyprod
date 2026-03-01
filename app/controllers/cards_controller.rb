@@ -5,7 +5,7 @@ class CardsController < ApplicationController
   def index
     @cards = Card.all
     
-    render json: @cards.map { |card|
+        render json: @cards.map { |card|
       {
         id: card.id,
         name: card.name,
@@ -13,9 +13,21 @@ class CardsController < ApplicationController
         music_recommendation: card.music_recommendation,
         created_at: card.created_at,
         updated_at: card.updated_at,
-        image_url: card.image.attached? ? url_for(card.image) : nil
+        image_url: begin
+                    if card.image.attached?
+                      begin
+                        # prefer direct service URL (Cloudinary)
+                        card.image.url
+                      rescue ArgumentError
+                        # fallback for Disk blobs (older uploads)
+                        url_for(card.image)
+                      end
+                    else
+                      nil
+                    end
+                  end
       }
-    }
+  }
   end
 
   # GET /cards/1
@@ -50,7 +62,7 @@ class CardsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_card
-      @card = Card.find(params.expect(:id))
+      @card = Card.find(params[:id])
     end
 
     # Only allow a list of trusted parameters through.
