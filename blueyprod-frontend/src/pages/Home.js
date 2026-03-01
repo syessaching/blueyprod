@@ -2,24 +2,23 @@ import React, {useState, useEffect} from 'react';
 
 
 function Home() {
-    const [cards, setCards]= useState([]);
-
+        const apiUrl = process.env.REACT_APP_API_URL || 'https://blueyprod.onrender.com';
 
     useEffect(() => {
-        fetch('http://localhost:3000/cards')
+    fetch(`${apiUrl}/cards`)
         .then(res => res.json())
         .then(data => {
-            console.log('Received data:', data);
-            if (Array.isArray(data)) {
-                setCards(data);
-            } else {
-                console.error('Data is not an array:', data);
-                setCards([]);
-            }
-            })
-            .catch(err => console.error('Error fetching cards:', err));
+        console.log('Received data:', data);
+        if (Array.isArray(data)) {
+            setCards(data);
+        } else {
+            console.error('Data is not an array:', data);
+            setCards([]);
+        }
+        })
+        .catch(err => console.error('Error fetching cards:', err));
     }, [])
-
+    
     return(
         <div>
             <h1> Happy Birthday, Millie! </h1>
