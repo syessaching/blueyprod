@@ -45,6 +45,9 @@ export default function Contribute() {
         setImageFile(null);
         setSubmitted(true);
         setTimeout(() => setSubmitted(false), 3000);
+
+        window.location.reload();
+
       })
       .catch(err => {
         console.error('Submit failed', err);
