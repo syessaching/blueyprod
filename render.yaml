@@ -2,8 +2,9 @@ services:
   - type: web
     name: blueyprod
     env: ruby
-    buildCommand: "bundle install --jobs 4 --path vendor/bundle && bundle exec rails db:migrate RAILS_ENV=production"
-    startCommand: "bundle exec puma -t 5:5 -p ${PORT:-3000} -e ${RAILS_ENV:-production}"
+    buildCommand: "bundle install --jobs 4 --path vendor/bundle"
+    releaseCommand: "bundle exec rails db:migrate RAILS_ENV=production"
+    startCommand: "bundle exec puma -t 5:5 -p ${PORT:-3000} -e ${RACK_ENV:-production}"
     envVars:
       - key: RAILS_MASTER_KEY
         sync: false
