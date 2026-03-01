@@ -29,18 +29,27 @@ function Contribute() {
         formDataToSend.append('card[image]', imageFile)
     }
 
-    fetch('http://localhost:3000/cards', {
-      method: 'POST', 
+    // new (use REACT_APP_API_URL)
+   const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:3000';
+
+    fetch(`${apiUrl}/cards`, {
+      method: 'POST',
       body: formDataToSend
     })
-    .then(res => res.json())
-    .then(newCard => {
-      setFormData({ name: '', message: '', music_recommendation: ''})
-      setImageFile(null)
-      setSubmitted(true)
-      setTimeout(() => setSubmitted(false), 3000)
-    })
-  }
+      .then(res => {
+        if (!res.ok) throw new Error(`Server returned ${res.status}`);
+        return res.json();
+      })
+      .then(newCard => {
+        setFormData({ name: '', message: '', music_recommendation: '' });
+        setImageFile(null);
+        setSubmitted(true);
+        setTimeout(() => setSubmitted(false), 3000);
+      })
+      .catch(err => {
+        console.error('Submit failed', err);
+        // optional: show user-friendly error state
+      });
 
 
     return (
