@@ -50,7 +50,7 @@ function Contribute() {
         console.error('Submit failed', err);
         // optional: show user-friendly error state
       });
-
+      }
 
     return (
       <div>
