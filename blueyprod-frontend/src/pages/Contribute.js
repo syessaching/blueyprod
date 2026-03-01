@@ -1,7 +1,7 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 
 
-function Contribute() {
+export default function Contribute() {
   const [formData, setFormData] = useState({
     name: '', 
     message: '',
@@ -96,5 +96,3 @@ function Contribute() {
 
 
 }
-
-export default Contribute;
