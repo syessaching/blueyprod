@@ -1,0 +1,88 @@
+.cassette-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #03385d 0%, #2991ec 100%);
+}
+
+.cassette-container h1 {
+  color: white;
+}
+
+.cassette{
+    margin: 40px 0;
+}
+
+.cassette-body{
+    width: 400px;
+    height: 250px;
+    background: #2c2c2c;
+    border-radius: 10px;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    padding: 20px;
+}
+
+.reel{
+    width: 80px;
+    height: 80px;
+    background: #444;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    border: 3px solid #666;
+
+}
+
+.left-reel{
+    left: 60px;
+
+}
+
+.right-reel{
+    right: 60px;
+}
+
+.reel::before {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 4px;
+  background: #888;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.reel::after {
+  content: '';
+  position: absolute;
+  width: 4px;
+  height: 20px;
+  background: #888;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.tape-tangle {
+  position: absolute;
+  width: 180px;
+  height: 3px;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #654321;
+  opacity: 1;
+  z-index: 10;
+  box-shadow: 
+    0 10px 0 #654321,
+    0 20px 0 #654321,
+    0 -10px 0 #654321,
+    5px 5px 0 #8B4513,
+    -5px 15px 0 #8B4513,
+    10px -5px 0 #8B4513;
+}
