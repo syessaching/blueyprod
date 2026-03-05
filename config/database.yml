@@ -23,11 +23,7 @@ test:
 # Store production database in the storage/ directory, which by default
 # is mounted as a persistent Docker volume in config/deploy.yml.
 production:
-  primary:
-    url: <%= ENV["DATABASE_URL"] %>
-  cache:
-    url: <%= ENV["DATABASE_URL"] %>
-  queue:
-    url: <%= ENV["DATABASE_URL"] %>
-  cable:
-    url: <%= ENV["DATABASE_URL"] %>
+  adapter: sqlite3
+  database: <%= ENV.fetch("DATABASE_URL") { "storage/production.sqlite3" } %>
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  timeout: 5000
