@@ -8,4 +8,7 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
+  get '/admin/clear_cards/:secret', to: 'cards#clear_all'
+
+
 end

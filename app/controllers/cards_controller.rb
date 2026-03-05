@@ -59,6 +59,15 @@ class CardsController < ApplicationController
     @card.destroy!
   end
 
+  def clear_all
+  if params[:secret] == 'millie2026'  # Change to your own secret word
+    Card.destroy_all
+    render json: { message: 'All cards deleted successfully' }
+  else
+    render json: { error: 'Unauthorized' }, status: 401
+  end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_card
