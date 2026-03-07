@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import Lottie from 'lottie-react'
 import fireworksAnimation from './Confetti.json'
