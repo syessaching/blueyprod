@@ -13,6 +13,7 @@ export default function Contribute() {
   });
   const [submitted, setSubmitted] = useState(false);
   const [imageFile, setImageFile] = useState(null);
+  const [isLoading, setIsLoading] = useState(false); 
 
   const handleChange = (e) => {
     setFormData({
@@ -23,6 +24,7 @@ export default function Contribute() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setIsLoading(true); 
 
     const formDataToSend = new FormData();
     formDataToSend.append('card[name]', formData.name)
@@ -47,11 +49,13 @@ export default function Contribute() {
       .then(newCard => {
         setFormData({ name: '', message: '', music_recommendation: '' });
         setImageFile(null);
+        setIsLoading(false); // ADD THIS
         setSubmitted(true);
         // setTimeout(() => setSubmitted(false), 3000);
       })
       .catch(err => {
         console.error('Submit failed', err);
+        setIsLoading(false)
       });
   }
 
@@ -89,6 +93,7 @@ export default function Contribute() {
           <p className="contribute-intro">Share your birthday wishes, a photo, and a song recommendation!</p>
 
              <Lottie 
+                className="side-animation"
                 animationData={birthdayGift}
                 loop={true}
                 style={{ 
@@ -102,6 +107,7 @@ export default function Contribute() {
               />
 
               <Lottie 
+                className="side-animation"
                 animationData={birthdayGift}
                 loop={true}
                 style={{ 
@@ -141,7 +147,8 @@ export default function Contribute() {
               accept="image/*"
               onChange={(e) => setImageFile(e.target.files[0])}
             />
-            <button type="submit">Add Card</button>
+            <button type="submit"disabled={isLoading}>{isLoading ? 'Sending...' : 'Add Card'}
+            </button>
           </form>
         </>
       )}
