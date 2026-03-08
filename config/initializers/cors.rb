@@ -1,9 +1,14 @@
 # config/initializers/cors.rb
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
-    origins 'https://blueyprod.vercel.app'   # <-- your frontend origin
+    origins '*'
+    
+    
+        # 'localhost:3000', 'http://localhost:3000',
+        #     'localhost:3001', 'http://localhost:3001', 
+        #     'https://blueyprod.vercel.app'
 
-    resource '/cards',
+    resource '*',
       headers: :any,
       methods: [:get, :post, :options],
       expose: [],

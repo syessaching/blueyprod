@@ -1,40 +1,72 @@
 import React, { useState, useEffect } from 'react';
+import './Home.css'
 
-export default function Home() {
+function Home() {
   const [cards, setCards] = useState([]);
+  const [selectedCard, setSelectedCard] = useState(null)
 
-  const apiUrl = process.env.REACT_APP_API_URL || 'https://blueyprod.onrender.com';
 
-  useEffect(() => {
-    fetch(`${apiUrl}/cards`)
-      .then(res => res.json())
-      .then(data => {
-        console.log('Received data:', data);
-        if (Array.isArray(data)) {
+    useEffect(() => {
+      fetch('https://blueyprod.onrender.com/cards')
+        .then(response => response.json())
+        .then(data => {
+          console.log('Fetched cards:', data);  // ADD THIS LINE
           setCards(data);
-        } else {
-          console.error('Data is not an array:', data);
-          setCards([]);
-        }
-      })
-      .catch(err => console.error('Error fetching cards:', err));
-  }, [apiUrl]);
+        })
+        .catch(error => console.error('Error:', error));
+    }, []);
+  const handleCardClick = (card) => {
+    setSelectedCard(card)
+  }
 
+  const handleClose = () => {
+    selectedCard(null)
+  }
+
+ 
   return (
     <div>
-      <h1> Happy Birthday, Millie! </h1>
-      <div className="cards-container">
+      <h1>Happy Birthday, Millie!</h1>
+      <div className="cards-grid">
         {cards.map(card => (
-          <div key={card.id} className="card">
-            <h3>{card.name}</h3>
-            {card.image_url && (
-              <img src={card.image_url} alt={`${card.name}'s upload`} className="card-image" />
-            )}
-            <p>{card.message}</p>
-            <p>🎵 {card.music_recommendation}</p>
+          <div key={card.id} 
+          className="greeting-card"
+          onClick={() => handleCardClick(card)}
+          >
+          <div className='card-front'>
+              <span className="birthday-icon">🎉</span>
+              <p className="from-text">From: {card.name}</p>
+          </div>
           </div>
         ))}
       </div>
+      {selectedCard && (
+        <div className="card-modal" onClick={handleClose}>
+          <div className="card-expanded" onClick={(e) => e.stopPropagation()}>
+            <button className="close-btn" onClick={handleClose}>×</button>
+            
+            <div className="card-content">
+              <h2>From: {selectedCard.name}</h2>
+              
+              {selectedCard.image_url && (
+                <img src={selectedCard.image_url} alt="Card" className="card-image" />
+              )}
+              
+              <p className="card-message">{selectedCard.message}</p>
+              
+              {selectedCard.music_recommendation && (
+                <div className="music-section">
+                  <p className="music-label">🎵 Song Recommendation:</p>
+                  <p className="music-rec">{selectedCard.music_recommendation}</p>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 }
+
+export default Home;

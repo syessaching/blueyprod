@@ -1,0 +1,11 @@
+.home-container {
+    min-height: 100vh;
+    padding: 40px 20px;
+    background:  linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    
+}
