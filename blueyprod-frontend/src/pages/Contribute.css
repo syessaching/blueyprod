@@ -9,6 +9,7 @@
   flex-direction: column;
   align-items: center;
   position: relative; /* ADD THIS for absolute positioned children */
+  overflow-x: hidden;
 }
 
 .contribute-container h1 {
@@ -186,33 +187,15 @@
     display: none !important;
   }
 }
-
+/* Mobile adjustments */
 @media (max-width: 768px) {
-  .contribute-container h1 {
-    font-size: 36px;
-  }
-
-  .contribute-intro {
-    font-size: 18px;
-    padding: 0 10px;
+  .contribute-container {
+    padding: 20px 15px; /* Less padding on mobile */
   }
 
   .contribute-container form {
-    padding: 30px 20px;
-  }
-
-  .contribute-container input,
-  .contribute-container textarea,
-  .contribute-container button {
-    font-size: 16px;
-  }
-
-  .thank-you-message h1 {
-    font-size: 48px;
-  }
-
-  .thank-you-message p {
-    font-size: 20px;
+    padding: 25px 20px; /* Smaller form padding */
+    max-width: 100%; /* Full width on mobile */
   }
 }
 
@@ -221,23 +204,7 @@
     padding: 20px 10px;
   }
 
-  .contribute-container h1 {
-    font-size: 28px;
-  }
-
-  .contribute-intro {
-    font-size: 16px;
-  }
-
   .contribute-container form {
     padding: 20px 15px;
-  }
-
-  .thank-you-message h1 {
-    font-size: 36px;
-  }
-
-  .thank-you-message p {
-    font-size: 18px;
   }
 }
