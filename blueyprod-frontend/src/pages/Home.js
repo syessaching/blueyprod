@@ -7,7 +7,9 @@ function Home() {
 
 
     useEffect(() => {
-      fetch('https://blueyprod.onrender.com/cards')
+      fetch ('https://blueyprod.onrender.com/cards')
+      // fetch('http://localhost:3000/cards')  
+      
         .then(response => response.json())
         .then(data => {
           console.log('Fetched cards:', data);  // ADD THIS LINE
@@ -20,7 +22,7 @@ function Home() {
   }
 
   const handleClose = () => {
-    selectedCard(null)
+    setSelectedCard(null)
   }
 
  

@@ -3,9 +3,200 @@
     padding: 40px 20px;
     background:  linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
+h1 {
+    text-align: center;
+    color: white;
+    font-size: 48px;
+    margin-bottom: 40px;
+    text-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
 
 .cards-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    
+    gap: 30px;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+
+}
+
+.greeting-card{
+    width: 100%;
+    height: 350px;
+    background: white;
+    border-radius:  15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+}
+
+.greeting-card:hover {
+    transform: translateY(-10px) scale(1.03);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+}
+
+.card-front {
+    width:  100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+    border-radius: 15px;
+    padding: 5px;
+}
+
+.birthday-icon {
+    font-size: 80px;
+    font-weight: bold;
+    color: #333;
+    margin: 0;
+}
+
+.card-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease;
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.card-expanded {
+  background: white;
+  border-radius: 20px;
+  max-width: 800px;
+  max-height: 95vh;  /* Changed from 90vh to 95vh */
+  width: 90%;
+  overflow-y: auto;
+  animation: zoomIn 0.4s ease;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  position: relative;
+}
+
+@keyframes zoomIn {
+  from {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.close-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #ff4444;
+  color: white;
+  border: none;
+  font-size: 28px;
+  line-height: 1;  /* ADD THIS */
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.2s ease;
+  display: flex;  /* ADD THIS */
+  align-items: center;  /* ADD THIS */
+  justify-content: center;  /* ADD THIS */
+}
+
+.close-btn:hover {
+  background: #cc0000;
+  transform: scale(1.1);
+}
+
+.card-content {
+  padding: 60px 30px 30px;  /* Reduced from 40px to 30px */
+}
+.card-content h2 {
+  color: #333;
+  font-size: 32px;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.card-image {
+  width: 100%;
+  height: auto;  /* Changed - let it be natural height */
+  object-fit: contain;
+  border-radius: 10px;
+  margin: 20px 0;
+  background: #f5f5f5;
+}
+
+.card-message {
+  font-size: 20px;
+  line-height: 1.8;
+  color: #555;
+  margin: 30px 0;
+  text-align: center;
+  font-style: italic;
+  word-wrap: break-word;  /* ADD THIS */
+  overflow-wrap: break-word;  /* ADD THIS */
+}
+
+.music-section {
+  background: #f0f0f0;
+  padding: 20px;
+  border-radius: 10px;
+  margin-top: 30px;
+  text-align: center;
+}
+
+.music-label {
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10px;
+  font-size: 18px;
+}
+
+.music-rec {
+  font-size: 18px;
+  color: #666;
+  margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  h1 {
+    font-size: 32px;
+  }
+  
+  .cards-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+  }
+  
+  .greeting-card {
+    height: 280px;
+  }
+  
+  .birthday-icon {
+    font-size: 60px;
+  }
+  
+  .from-text {
+    font-size: 18px;
+  }
+  
+  .card-content {
+    padding: 50px 20px 20px;
+  }
 }

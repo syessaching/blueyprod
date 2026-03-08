@@ -22,11 +22,7 @@ function App() {
             <Home isPlaying={isPlaying} />
           </div>
         } />
-        <Route path="/contribute" element={
-          <div className='App'>
-            <Contribute />
-          </div>
-        } />
+        <Route path="/contribute" element={<Contribute />} />
       </Routes>
     </Router>
   );
