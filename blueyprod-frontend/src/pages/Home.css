@@ -140,6 +140,12 @@ h1 {
   margin: 20px 0;
   background: #f5f5f5;
 }
+.card-dragon-icon {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+  margin-bottom: 20px;
+}
 
 .card-message {
   font-size: 20px;

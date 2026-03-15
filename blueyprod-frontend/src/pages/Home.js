@@ -7,8 +7,8 @@ function Home() {
 
   const randomImages = ['/babytoothless.png', '/toothlesscupcake.png', '/lightfury.png'];
   
-  const getRandomImage = () => {
-    return randomImages[Math.floor(Math.random() * randomImages.length)];
+  const getImageForCard = (cardId) => {
+    return randomImages[cardId % 3]; // Uses card ID to pick image
   };
 
 
@@ -43,14 +43,9 @@ function Home() {
           >
           <div className='card-front'>
                 <img 
-                  src={getRandomImage()}
+                  src={getImageForCard(card.id)}
                   alt="Dragon"
-                  style={{
-                    width: '100px',
-                    height: '100px',
-                    marginBottom: '20px',
-                    objectFit: 'contain'
-                  }}
+                  className="card-dragon-icon"
                 />
               <p className="from-text">From: {card.name}</p>
           </div>
