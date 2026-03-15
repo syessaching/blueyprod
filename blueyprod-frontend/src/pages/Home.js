@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import Lottie from 'lottie-react';
+import presents from './presents.json'; 
+import boxes from './boxes.json'; 
 import './Home.css'
 
 function Home() {
@@ -11,6 +14,20 @@ function Home() {
     return randomImages[cardId % 3]; // Uses card ID to pick image
   };
 
+  const getCardColors = (cardId) => {
+  const colorThemes = [
+    { bg: 'linear-gradient(135deg, #7b4a1e 0%, #f0d0a0 100%)' }, // Flat white
+    { bg: 'linear-gradient(135deg, #3b1f0a 0%, #d4a96a 100%)' }, // Americano
+    { bg: 'linear-gradient(135deg, #1b6b5a 0%, #a8d4e8 100%)' }, // Baby Toothless
+    { bg: 'linear-gradient(135deg, #7a2060 0%, #ff7eb3 100%)' }, // Hibiscus
+    { bg: 'linear-gradient(135deg, #c0623a 0%, #ffd8c0 100%)' }, // Peach bloom
+    { bg: 'linear-gradient(135deg, #e8896a 0%, #fff0e8 100%)' }, // Sorbet
+    { bg: 'linear-gradient(135deg, #e6a800 0%, #fff8cc 100%)' }, // Buttercup
+
+  ];
+  const scrambled = (cardId * 3 + 2) % colorThemes.length;
+  return colorThemes[scrambled];
+  };  
 
   useEffect(() => {
       fetch ('https://blueyprod.onrender.com/cards')
@@ -33,7 +50,34 @@ function Home() {
 
  
   return (
-    <div>
+    <div className='home-container'>
+       {/* Top left - boxes */}
+      <Lottie 
+        animationData={boxes}
+        loop={true}
+        style={{ 
+          width: '200px',
+          height: '200px',
+          position: 'absolute',
+          left: '1%',
+          top: '0%',
+          opacity: 0.8
+        }}
+      />
+
+      {/* Top right - boxes */}
+      <Lottie 
+        animationData={boxes}
+        loop={true}
+        style={{ 
+          width: '200px',
+          height: '200px',
+          position: 'absolute',
+          right: '1%',
+          top: '0%',
+          opacity: 0.8
+        }}
+      />
       <h1>Happy Birthday, Millie!</h1>
       <div className="cards-grid">
         {cards.map(card => (
@@ -41,7 +85,12 @@ function Home() {
           className="greeting-card"
           onClick={() => handleCardClick(card)}
           >
-          <div className='card-front'>
+          <div className='card-front'
+            style={{
+            background: getCardColors(card.id).bg,
+            borderColor: getCardColors(card.id).border
+            }}  
+          >
                 <img 
                   src={getImageForCard(card.id)}
                   alt="Dragon"
@@ -52,6 +101,35 @@ function Home() {
           </div>
         ))}
       </div>
+        <Lottie 
+        animationData={presents}
+        loop={true}
+        style={{ 
+          width: '200px',
+          height: '200px',
+          position: 'absolute',
+          left: '1%',
+          bottom: '2%',
+          opacity: 0.8
+        }}
+      />
+
+        {/* Bottom right - presents */}
+        <Lottie 
+          animationData={presents}
+          loop={true}
+          style={{ 
+            width: '200px',
+            height: '200px',
+            position: 'absolute',
+            right: '1%',
+            bottom: '2%',
+            opacity: 0.8
+          }}
+        />
+
+      
+
       {selectedCard && (
         <div className="card-modal" onClick={handleClose}>
           <div className="card-expanded" onClick={(e) => e.stopPropagation()}>
