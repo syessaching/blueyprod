@@ -5,8 +5,14 @@ function Home() {
   const [cards, setCards] = useState([]);
   const [selectedCard, setSelectedCard] = useState(null)
 
+  const randomImages = ['/babytoothless.png', '/toothlesscupcake.png', '/lightfury.png'];
+  
+  const getRandomImage = () => {
+    return randomImages[Math.floor(Math.random() * randomImages.length)];
+  };
 
-    useEffect(() => {
+
+  useEffect(() => {
       fetch ('https://blueyprod.onrender.com/cards')
       // fetch('http://localhost:3000/cards')  
       
@@ -36,7 +42,16 @@ function Home() {
           onClick={() => handleCardClick(card)}
           >
           <div className='card-front'>
-              <span className="birthday-icon">🎉</span>
+                <img 
+                  src={getRandomImage()}
+                  alt="Dragon"
+                  style={{
+                    width: '100px',
+                    height: '100px',
+                    marginBottom: '20px',
+                    objectFit: 'contain'
+                  }}
+                />
               <p className="from-text">From: {card.name}</p>
           </div>
           </div>
