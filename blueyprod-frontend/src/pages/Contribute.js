@@ -43,26 +43,24 @@ export default function Contribute() {
 
     const apiUrl = process.env.REACT_APP_API_URL || 'https://blueyprod.onrender.com';
     // const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:3000';
-
-    fetch(`${apiUrl}/cards`, {
-      method: 'POST',
-      body: formDataToSend
-    })
-      .then(res => {
-        if (!res.ok) throw new Error(`Server returned ${res.status}`);
-        return res.json();
-      })
-      .then(newCard => {
-        setFormData({ name: '', message: '', music_recommendation: '' });
-        setImageFile(null);
-        setIsLoading(false); // ADD THIS
-        setSubmitted(true);
-        // setTimeout(() => setSubmitted(false), 3000);
-      })
-      .catch(err => {
-        console.error('Submit failed', err);
-        setIsLoading(false)
-      });
+fetch(`${apiUrl}/cards`, {
+  method: 'POST',
+  body: formDataToSend
+})
+  .then(res => {
+    if (res.status === 201 || res.status === 200) {
+      setFormData({ name: '', message: '', music_recommendation: '' });
+      setImageFile(null);
+      setIsLoading(false);
+      setSubmitted(true);
+    } else {
+      throw new Error(`Server returned ${res.status}`);
+    }
+  })
+  .catch(err => {
+    console.error('Submit failed', err);
+    setIsLoading(false);
+  });
   }
 
   return (
