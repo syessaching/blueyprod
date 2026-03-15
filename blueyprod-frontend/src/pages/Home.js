@@ -5,6 +5,7 @@ import boxes from './boxes.json';
 import './Home.css'
 
 function Home() {
+  const isAdmin = new URLSearchParams(window.location.search).get('admin') === 'true';
   const [cards, setCards] = useState([]);
   const [selectedCard, setSelectedCard] = useState(null)
 
@@ -84,7 +85,32 @@ function Home() {
           <div key={card.id} 
           className="greeting-card"
           onClick={() => handleCardClick(card)}
+          style={{ position: 'relative' }}  // 👈 ADD THIS
           >
+            {isAdmin && (  // 👈 ADD THIS BLOCK
+              <button 
+                onClick={(e) => {
+                  e.stopPropagation();
+                  fetch(`https://blueyprod.onrender.com/cards/${card.id}`, { method: 'DELETE' })
+                    .then(() => setCards(cards.filter(c => c.id !== card.id)));
+                }}
+                style={{
+                  position: 'absolute',
+                  top: '8px',
+                  right: '8px',
+                  background: 'red',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '50%',
+                  width: '28px',
+                  height: '28px',
+                  cursor: 'pointer',
+                  zIndex: 10,
+                  fontSize: '16px'
+                }}
+              >×</button>
+            )}
+          
           <div className='card-front'
             style={{
             background: getCardColors(card.id).bg,
