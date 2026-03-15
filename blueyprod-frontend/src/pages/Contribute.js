@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect} from "react";
 import Lottie from 'lottie-react';
 import birthdayAnimation from './balloon.json';  
 import birthdayconfetti from './banner.json';  
@@ -14,6 +14,12 @@ export default function Contribute() {
   const [submitted, setSubmitted] = useState(false);
   const [imageFile, setImageFile] = useState(null);
   const [isLoading, setIsLoading] = useState(false); 
+
+  useEffect(() => {
+    if (submitted) {
+      window.history.replaceState(null, '', '/contribute');
+    }
+  }, [submitted]);
 
   const handleChange = (e) => {
     setFormData({
