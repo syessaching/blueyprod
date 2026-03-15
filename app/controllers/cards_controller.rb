@@ -37,13 +37,31 @@ class CardsController < ApplicationController
 
   # POST /cards
   def create
-     @card = Card.new(card_params)
-    if @card.save
-      render json: @card, status: :created
-    else
-      render json: { errors: @card.errors.full_messages }, status: :unprocessable_entity
-    end
+  @card = Card.new(card_params)
+  if @card.save
+    render json: {
+      id: @card.id,
+      name: @card.name,
+      message: @card.message,
+      music_recommendation: @card.music_recommendation,
+      created_at: @card.created_at,
+      updated_at: @card.updated_at,
+      image_url: begin
+        if @card.image.attached?
+          begin
+            @card.image.url
+          rescue ArgumentError
+            url_for(@card.image)
+          end
+        else
+          nil
+        end
+      end
+    }, status: :created
+  else
+    render json: { errors: @card.errors.full_messages }, status: :unprocessable_entity
   end
+end
 
   # PATCH/PUT /cards/1
   def update
