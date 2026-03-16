@@ -194,10 +194,11 @@
   line-height: 1.8;
   color: #555;
   margin: 30px 0;
-  text-align: center;
+  text-align: left;
   font-style: italic;
   word-wrap: break-word;  /* ADD THIS */
   overflow-wrap: break-word;  /* ADD THIS */
+  white-space: pre-wrap;
 }
 
 .music-section {
@@ -226,7 +227,33 @@
   h1 {
     font-size: 32px;
   }
-  
+   .home-container h1 {
+    font-size: 32px;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+    padding: 0 10px;
+  }
+
+  .cards-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    padding: 10px 10px 60px 10px;
+  }
+
+  .greeting-card {
+    height: 220px;
+  }
+
+  .card-dragon-icon {
+    width: 80px;
+    height: 80px;
+  }
+
+  /* Hide side animations on mobile - too cramped */
+  .side-animation {
+    display: none;
+  }
+}
   .cards-grid {
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 20px;
