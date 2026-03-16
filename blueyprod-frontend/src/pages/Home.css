@@ -223,11 +223,9 @@
 }
 
 /* Responsive */
+/* Responsive */
 @media (max-width: 768px) {
-  h1 {
-    font-size: 32px;
-  }
-   .home-container h1 {
+  .home-container h1 {
     font-size: 32px;
     letter-spacing: 1px;
     margin-bottom: 20px;
@@ -249,29 +247,19 @@
     height: 80px;
   }
 
-  /* Hide side animations on mobile - too cramped */
-  .side-animation {
-    display: none;
-  }
-}
-  .cards-grid {
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 20px;
-  }
-  
-  .greeting-card {
-    height: 280px;
-  }
-  
   .birthday-icon {
     font-size: 60px;
   }
-  
+
   .from-text {
     font-size: 18px;
   }
-  
+
   .card-content {
     padding: 50px 20px 20px;
+  }
+
+  .side-animation {
+    display: none;
   }
 }
