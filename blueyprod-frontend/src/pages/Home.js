@@ -56,10 +56,10 @@ function Home() {
     const pdf = new jsPDF('p', 'mm', 'a4');
     const pageWidth = pdf.internal.pageSize.getWidth();
     const pageHeight = pdf.internal.pageSize.getHeight();
-    const cardsPerPage = 2;
-    const cardHeight = 120;
     const cardMargin = 10;
-    const startY = 30;
+    const startY = 20;
+    const cardHeight = 130;
+    const cardsPerPage = 2;
 
     // Cover page
     pdf.setFillColor(14, 31, 61);
@@ -71,9 +71,7 @@ function Home() {
     pdf.setFontSize(14);
     pdf.setFont('helvetica', 'normal');
     pdf.text(`${cards.length} birthday cards from people who love you`, pageWidth / 2, 100, { align: 'center' });
-    pdf.text('🐉', pageWidth / 2, 130, { align: 'center' });
 
-    // Cards pages
     let currentY = startY;
 
     for (let i = 0; i < cards.length; i++) {
@@ -81,46 +79,23 @@ function Home() {
 
       if (i % cardsPerPage === 0) {
         pdf.addPage();
-        // Page background
         pdf.setFillColor(26, 53, 102);
         pdf.rect(0, 0, pageWidth, pageHeight, 'F');
         currentY = startY;
       }
 
-      // Card background color (simplified solid color from gradient)
       const colors = [
         [123, 74, 30], [59, 31, 10], [27, 107, 90],
         [122, 32, 96], [192, 98, 58], [232, 137, 106], [230, 168, 0]
       ];
       const colorIndex = (card.id * 3 + 2) % colors.length;
       const [r, g, b] = colors[colorIndex];
-      
+
       pdf.setFillColor(r, g, b);
       pdf.roundedRect(cardMargin, currentY, pageWidth - (cardMargin * 2), cardHeight, 5, 5, 'F');
 
-      // From name
-      pdf.setTextColor(255, 255, 255);
-      pdf.setFontSize(16);
-      pdf.setFont('helvetica', 'bold');
-      pdf.text(`From: ${card.name}`, cardMargin + 10, currentY + 15);
-
-      // Message
-      pdf.setFontSize(11);
-      pdf.setFont('helvetica', 'italic');
-      pdf.setTextColor(255, 255, 255);
-      const splitMessage = pdf.splitTextToSize(card.message || '', pageWidth - (cardMargin * 2) - 20);
-      const maxLines = splitMessage.slice(0, 5);
-      pdf.text(maxLines, cardMargin + 10, currentY + 28);
-
-      // Music recommendation
-      if (card.music_recommendation) {
-        pdf.setFontSize(10);
-        pdf.setFont('helvetica', 'normal');
-        pdf.setTextColor(255, 220, 150);
-        pdf.text(`🎵 ${card.music_recommendation}`, cardMargin + 10, currentY + cardHeight - 15);
-      }
-
-      // Try to add uploaded image
+      // Image first — top right of card
+      let imageWidth = 0;
       if (card.image_url) {
         try {
           const img = new Image();
@@ -130,17 +105,49 @@ function Home() {
             img.onerror = reject;
             img.src = card.image_url;
           });
+
+          // Maintain aspect ratio
+          const maxW = 50;
+          const maxH = 50;
+          const ratio = Math.min(maxW / img.width, maxH / img.height);
+          const imgW = img.width * ratio;
+          const imgH = img.height * ratio;
+
           const canvas = document.createElement('canvas');
           canvas.width = img.width;
           canvas.height = img.height;
           const ctx = canvas.getContext('2d');
           ctx.drawImage(img, 0, 0);
           const imgData = canvas.toDataURL('image/jpeg');
-          const imgX = pageWidth - cardMargin - 45;
-          pdf.addImage(imgData, 'JPEG', imgX, currentY + 5, 40, 40);
+
+          const imgX = pageWidth - cardMargin - imgW - 5;
+          pdf.addImage(imgData, 'JPEG', imgX, currentY + 5, imgW, imgH);
+          imageWidth = imgW + 10;
         } catch (e) {
           console.log('Could not load image for card', card.id);
         }
+      }
+
+      // From name
+      const textWidth = pageWidth - (cardMargin * 2) - imageWidth - 10;
+      pdf.setTextColor(255, 255, 255);
+      pdf.setFontSize(16);
+      pdf.setFont('helvetica', 'bold');
+      pdf.text(`From: ${card.name}`, cardMargin + 8, currentY + 14);
+
+      // Message
+      pdf.setFontSize(10);
+      pdf.setFont('helvetica', 'italic');
+      const splitMessage = pdf.splitTextToSize(card.message || '', textWidth);
+      const maxLines = splitMessage.slice(0, 8);
+      pdf.text(maxLines, cardMargin + 8, currentY + 25);
+
+      // Music rec — no emoji, plain text
+      if (card.music_recommendation) {
+        pdf.setFontSize(9);
+        pdf.setFont('helvetica', 'normal');
+        pdf.setTextColor(255, 220, 150);
+        pdf.text(`Song: ${card.music_recommendation}`, cardMargin + 8, currentY + cardHeight - 8);
       }
 
       currentY += cardHeight + cardMargin;
