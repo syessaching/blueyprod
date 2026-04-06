@@ -51,51 +51,55 @@ function Home() {
     setSelectedCard(null)
   }
 
- const generatePDF = async () => {
+const generatePDF = async () => {
     setIsGeneratingPDF(true);
     const pdf = new jsPDF('p', 'mm', 'a4');
     const pageWidth = pdf.internal.pageSize.getWidth();
     const pageHeight = pdf.internal.pageSize.getHeight();
-    const cardMargin = 10;
-    const startY = 20;
-    const cardHeight = 130;
-    const cardsPerPage = 2;
+    const margin = 15;
+
+    // Strip emojis helper
+    const stripEmojis = (str) => str ? str.replace(/[\u{1F300}-\u{1FFFF}|\u{2600}-\u{26FF}|\u{2700}-\u{27BF}|\u{FE00}-\u{FE0F}|\u{1F900}-\u{1F9FF}]/gu, '').trim() : '';
 
     // Cover page
     pdf.setFillColor(14, 31, 61);
     pdf.rect(0, 0, pageWidth, pageHeight, 'F');
     pdf.setTextColor(255, 255, 255);
-    pdf.setFontSize(28);
+    pdf.setFontSize(32);
     pdf.setFont('times', 'italic');
-    pdf.text('Happy Birthday, Millie!', pageWidth / 2, 80, { align: 'center' });
+    pdf.text('Happy Birthday, Millie!', pageWidth / 2, pageHeight / 2 - 20, { align: 'center' });
     pdf.setFontSize(14);
     pdf.setFont('helvetica', 'normal');
-    pdf.text(`${cards.length} birthday cards from people who love you`, pageWidth / 2, 100, { align: 'center' });
+    pdf.text(`${cards.length} birthday cards from people who love you`, pageWidth / 2, pageHeight / 2 + 10, { align: 'center' });
 
-    let currentY = startY;
-
+    // One card per page
     for (let i = 0; i < cards.length; i++) {
       const card = cards[i];
+      pdf.addPage();
 
-      if (i % cardsPerPage === 0) {
-        pdf.addPage();
-        pdf.setFillColor(26, 53, 102);
-        pdf.rect(0, 0, pageWidth, pageHeight, 'F');
-        currentY = startY;
-      }
-
+      // Card background color
       const colors = [
         [123, 74, 30], [59, 31, 10], [27, 107, 90],
         [122, 32, 96], [192, 98, 58], [232, 137, 106], [230, 168, 0]
       ];
       const colorIndex = (card.id * 3 + 2) % colors.length;
       const [r, g, b] = colors[colorIndex];
-
       pdf.setFillColor(r, g, b);
-      pdf.roundedRect(cardMargin, currentY, pageWidth - (cardMargin * 2), cardHeight, 5, 5, 'F');
+      pdf.rect(0, 0, pageWidth, pageHeight, 'F');
 
-      // Image first — top right of card
-      let imageWidth = 0;
+      // From name
+      pdf.setTextColor(255, 255, 255);
+      pdf.setFontSize(22);
+      pdf.setFont('helvetica', 'bold');
+      pdf.text(`From: ${card.name}`, margin, 30);
+
+      // Divider line
+      pdf.setDrawColor(255, 255, 255);
+      pdf.setLineWidth(0.5);
+      pdf.line(margin, 35, pageWidth - margin, 35);
+
+      // Image — top right
+      let imageLoaded = false;
       if (card.image_url) {
         try {
           const img = new Image();
@@ -106,9 +110,8 @@ function Home() {
             img.src = card.image_url;
           });
 
-          // Maintain aspect ratio
-          const maxW = 50;
-          const maxH = 50;
+          const maxW = 70;
+          const maxH = 70;
           const ratio = Math.min(maxW / img.width, maxH / img.height);
           const imgW = img.width * ratio;
           const imgH = img.height * ratio;
@@ -120,37 +123,30 @@ function Home() {
           ctx.drawImage(img, 0, 0);
           const imgData = canvas.toDataURL('image/jpeg');
 
-          const imgX = pageWidth - cardMargin - imgW - 5;
-          pdf.addImage(imgData, 'JPEG', imgX, currentY + 5, imgW, imgH);
-          imageWidth = imgW + 10;
+          pdf.addImage(imgData, 'JPEG', pageWidth - margin - imgW, 45, imgW, imgH);
+          imageLoaded = true;
         } catch (e) {
           console.log('Could not load image for card', card.id);
         }
       }
 
-      // From name
-      const textWidth = pageWidth - (cardMargin * 2) - imageWidth - 10;
-      pdf.setTextColor(255, 255, 255);
-      pdf.setFontSize(16);
-      pdf.setFont('helvetica', 'bold');
-      pdf.text(`From: ${card.name}`, cardMargin + 8, currentY + 14);
-
       // Message
-      pdf.setFontSize(10);
+      pdf.setFontSize(12);
       pdf.setFont('helvetica', 'italic');
-      const splitMessage = pdf.splitTextToSize(card.message || '', textWidth);
-      const maxLines = splitMessage.slice(0, 8);
-      pdf.text(maxLines, cardMargin + 8, currentY + 25);
+      pdf.setTextColor(255, 255, 255);
+      const cleanMessage = stripEmojis(card.message);
+      const messageWidth = imageLoaded ? pageWidth - margin * 2 - 80 : pageWidth - margin * 2;
+      const splitMessage = pdf.splitTextToSize(cleanMessage, messageWidth);
+      pdf.text(splitMessage, margin, 48);
 
-      // Music rec — no emoji, plain text
+      // Music rec
       if (card.music_recommendation) {
-        pdf.setFontSize(9);
+        pdf.setFontSize(11);
         pdf.setFont('helvetica', 'normal');
         pdf.setTextColor(255, 220, 150);
-        pdf.text(`Song: ${card.music_recommendation}`, cardMargin + 8, currentY + cardHeight - 8);
+        const cleanMusic = stripEmojis(card.music_recommendation);
+        pdf.text(`Song recommendation: ${cleanMusic}`, margin, pageHeight - 20);
       }
-
-      currentY += cardHeight + cardMargin;
     }
 
     pdf.save('Happy_Birthday_Millie.pdf');
