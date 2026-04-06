@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Lottie from 'lottie-react';
 import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas';
 import presents from './presents.json'; 
 import boxes from './boxes.json'; 
 import './Home.css'
@@ -76,7 +75,6 @@ function Home() {
 
     // Cards pages
     let currentY = startY;
-    let isFirstCard = true;
 
     for (let i = 0; i < cards.length; i++) {
       const card = cards[i];
